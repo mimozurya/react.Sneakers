@@ -4,7 +4,7 @@ import "./index.scss";
 function App() {
     return (
         <div className="wrapper clear">
-            <header className="d-flex justify-between align-center p-40">
+            <header className="d-flex align-center justify-between p-40">
                 <div className="d-flex align-center">
                     <img src="/img/logo.png" width={40} height={40} />
                     <div>
