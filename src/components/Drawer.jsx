@@ -1,4 +1,15 @@
+import { useContext, useState } from "react";
+import Info from "./Info";
+import AppContext from "../context";
+
 function Drawer({ onClose, items = [], onRemove }) {
+    const { setCartItems } = useContext(AppContext);
+    const [isOrderComplete, setIsOrderComplete] = useState(false);
+    const onClickOrder = () => {
+        setIsOrderComplete(true);
+        setCartItems([]);
+    };
+
     return (
         <div className="overlay">
             <div className="drawer d-flex flex-column">
@@ -8,7 +19,7 @@ function Drawer({ onClose, items = [], onRemove }) {
                 </h2>
 
                 {items.length > 0 ? (
-                    <div>
+                    <div className="d-flex flex-column flex">
                         <div className="items">
                             {items.map((obj) => (
                                 <div key={obj.id} className="cartItem d-flex align-center mb-20">
@@ -42,29 +53,21 @@ function Drawer({ onClose, items = [], onRemove }) {
                                     <b>1074 руб.</b>
                                 </li>
                             </ul>
-                            <button className="greenButton">
+                            <button onClick={onClickOrder} className="greenButton">
                                 Оформить заказ <img src="/img/arrow.svg" alt="arrow" />
                             </button>
                         </div>
                     </div>
                 ) : (
-                    <div className="cartEmpty d-flex align-center justify-center flex-column flex">
-                        <img
-                            className="mb-20"
-                            width={120}
-                            height={120}
-                            src="/img/empty-cart.jpg"
-                            alt="emptyBox"
-                        />
-                        <h2>Корзина пустая</h2>
-                        <p className="opacity-6">
-                            Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.
-                        </p>
-                        <button onClick={onClose} className="greenButton">
-                            <img src="/img/arrow.svg" alt="arrow" />
-                            Вернуться назад
-                        </button>
-                    </div>
+                    <Info
+                        title={isOrderComplete ? "Заказ оформлен!" : "Корзина пустая"}
+                        description={
+                            isOrderComplete
+                                ? "Заказ №18 скоро будет передан"
+                                : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
+                        }
+                        image={isOrderComplete ? "/img/complete-order.jpg" : "/img/empty-cart.jpg"}
+                    />
                 )}
             </div>
         </div>
