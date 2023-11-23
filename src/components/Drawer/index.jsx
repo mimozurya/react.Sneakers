@@ -1,13 +1,15 @@
 import { useContext, useState } from "react";
 import axios from "axios";
 
-import Info from "./Info";
-import AppContext from "../context";
+import Info from "../Info";
+import { UseCart } from "../../hooks/useCart";
+
+import styles from "./Drawer.module.scss";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function Drawer({ onClose, items = [], onRemove }) {
-    const { cartItems, setCartItems } = useContext(AppContext);
+function Drawer({ onClose, items = [], onRemove, opened }) {
+    const { cartItems, setCartItems, totalPrice } = UseCart();
     const [orderId, setOrderId] = useState(null);
     const [isOrderComplete, setIsOrderComplete] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -37,8 +39,8 @@ function Drawer({ onClose, items = [], onRemove }) {
     };
 
     return (
-        <div className="overlay">
-            <div className="drawer d-flex flex-column">
+        <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ""}`}>
+            <div className={`${styles.drawer} d-flex flex-column`}>
                 <h2 className="mb-30 d-flex justify-between">
                     Корзина{" "}
                     <img onClick={onClose} className="cu-p" src="/img/btn-remove.svg" alt="Close" />
@@ -71,12 +73,12 @@ function Drawer({ onClose, items = [], onRemove }) {
                                 <li>
                                     <span>Итого:</span>
                                     <div></div>
-                                    <b>21 498 руб.</b>
+                                    <b>{totalPrice} руб.</b>
                                 </li>
                                 <li>
                                     <span>Налог 5%:</span>
                                     <div></div>
-                                    <b>1074 руб.</b>
+                                    <b>{(totalPrice / 100) * 5} руб.</b>
                                 </li>
                             </ul>
                             <button

@@ -8,6 +8,7 @@ import Drawer from "./components/Drawer";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import AppContext from "./context";
+import Orders from "./pages/Orders";
 
 function App() {
     const [items, setItems] = useState([]);
@@ -30,7 +31,6 @@ function App() {
             );
 
             setIsLoading(false);
-
             setCartItems(cartResponce.data);
             setFavorites(favoritesResponce.data);
             setItems(itemsResponce.data);
@@ -88,18 +88,18 @@ function App() {
                 favorites,
                 isItemAdded,
                 onAddToFavorite,
+                onAddToCart,
                 setCartOpened,
                 setCartItems,
             }}
         >
             <div className="wrapper clear">
-                {cartOpened && (
-                    <Drawer
-                        items={cartItems}
-                        onClose={() => setCartOpened(false)}
-                        onRemove={onRemoveItem}
-                    />
-                )}
+                <Drawer
+                    items={cartItems}
+                    onClose={() => setCartOpened(false)}
+                    onRemove={onRemoveItem}
+                    opened={cartOpened}
+                />
 
                 <Header onClickCart={() => setCartOpened(true)} />
 
@@ -121,6 +121,7 @@ function App() {
                         }
                     />
                     <Route exact path="/favorites" element={<Favorites />} />
+                    <Route exact path="/orders" element={<Orders />} />
                 </Routes>
             </div>
         </AppContext.Provider>
